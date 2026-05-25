@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { PlayerState, ScreenScores, CompletedCase, LevelName } from '../types/player';
-import type { GameState, PlayerChoices, ScreenNumber } from '../types/game';
+import type { GameState, ScreenNumber } from '../types/game';
 import type { CaseDefinition, ComplicationScenario, PostopOrders } from '../types/case';
 import type { CysticDuctSize, StoneBurden, Technique, PrimaryClearanceMethod } from '../types/algorithm';
 import { DEFAULT_PLAYER } from '../types/player';

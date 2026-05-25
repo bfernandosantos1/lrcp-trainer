@@ -42,7 +42,7 @@ export function ImageViewer({ src, alt, className = '' }: Props) {
   }, []);
 
   return (
-    <div className={`relative bg-black rounded-lg overflow-hidden ${className}`}>
+    <div className={`relative bg-black rounded-lg overflow-hidden border border-monitor-border ${className}`}>
       <div
         ref={containerRef}
         className="ioc-viewer w-full h-full flex items-center justify-center"
@@ -68,24 +68,24 @@ export function ImageViewer({ src, alt, className = '' }: Props) {
       <div className="absolute bottom-2 right-2 flex gap-1">
         <button
           onClick={() => setScale(s => Math.min(4, s + 0.25))}
-          className="bg-slate-800/80 text-white rounded px-2 py-1 text-xs hover:bg-slate-700"
+          className="bg-monitor-panel/80 text-vital-cyan rounded px-2 py-1 text-xs hover:bg-monitor-panel border border-monitor-border/50"
         >
           +
         </button>
         <button
           onClick={() => setScale(s => Math.max(0.5, s - 0.25))}
-          className="bg-slate-800/80 text-white rounded px-2 py-1 text-xs hover:bg-slate-700"
+          className="bg-monitor-panel/80 text-vital-cyan rounded px-2 py-1 text-xs hover:bg-monitor-panel border border-monitor-border/50"
         >
           -
         </button>
         <button
           onClick={resetView}
-          className="bg-slate-800/80 text-white rounded px-2 py-1 text-xs hover:bg-slate-700"
+          className="bg-monitor-panel/80 text-vital-cyan rounded px-2 py-1 text-xs hover:bg-monitor-panel border border-monitor-border/50"
         >
           Reset
         </button>
       </div>
-      <div className="absolute top-2 left-2 text-[10px] text-slate-400 bg-slate-800/70 rounded px-2 py-0.5">
+      <div className="absolute top-2 left-2 text-[10px] text-monitor-text/60 bg-monitor-panel/70 rounded px-2 py-0.5 font-clinical border border-monitor-border/30">
         {Math.round(scale * 100)}% | Scroll to zoom, drag to pan
       </div>
     </div>

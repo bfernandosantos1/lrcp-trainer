@@ -30,9 +30,9 @@ export function Screen4Equipment() {
 
   return (
     <div className="space-y-4">
-      <div className="bg-gradient-to-r from-slate-800 to-slate-800/50 rounded-lg p-4 border border-slate-700/50">
-        <h2 className="text-lg font-bold text-slate-100">Equipment Selection</h2>
-        <p className="text-sm text-slate-400">
+      <div className="bg-gradient-to-r from-vital-blue/10 to-monitor-panel rounded-lg p-4 border border-vital-blue/20">
+        <h2 className="text-lg font-bold text-monitor-bright">Equipment Selection</h2>
+        <p className="text-sm text-monitor-text/50">
           Based on your chosen technique ({activeCase.correctAlgorithmPath.technique === 'choledochoscope_assisted' ? 'Choledochoscope-Assisted' : 'Fluoroscopy-Guided'}),
           select all equipment you will need.
         </p>
@@ -45,7 +45,7 @@ export function Screen4Equipment() {
             key={cat}
             onClick={() => setFilter(cat)}
             className={`px-3 py-1 rounded-full text-xs font-medium transition-colors capitalize
-              ${filter === cat ? 'bg-blue-600 text-white' : 'bg-slate-700 text-slate-400 hover:text-slate-200'}`}
+              ${filter === cat ? 'bg-vital-cyan text-monitor-bg' : 'bg-monitor-panel text-monitor-text/50 hover:text-monitor-bright border border-monitor-border'}`}
           >
             {cat === 'all' ? 'All' : EQUIPMENT_CATEGORY_LABELS[cat as EquipmentItem['category']] || cat}
           </button>
@@ -58,14 +58,14 @@ export function Screen4Equipment() {
           const isSelected = selectedEquipment.includes(item.id);
           const isRequired = required.has(item.id);
 
-          let bgClass = 'bg-slate-800 border-slate-700 hover:border-slate-500';
+          let bgClass = 'bg-monitor-panel border-monitor-border hover:border-monitor-text/30';
           if (submitted) {
-            if (isRequired && isSelected) bgClass = 'bg-green-900/30 border-green-600';
-            else if (isRequired && !isSelected) bgClass = 'bg-amber-900/20 border-amber-600/50';
-            else if (!isRequired && isSelected) bgClass = 'bg-red-900/30 border-red-600';
-            else bgClass = 'bg-slate-800/50 border-slate-700/50';
+            if (isRequired && isSelected) bgClass = 'bg-vital-green/10 border-vital-green';
+            else if (isRequired && !isSelected) bgClass = 'bg-vital-amber/10 border-vital-amber/50';
+            else if (!isRequired && isSelected) bgClass = 'bg-vital-red/10 border-vital-red';
+            else bgClass = 'bg-monitor-panel/50 border-monitor-border/50';
           } else if (isSelected) {
-            bgClass = 'bg-blue-900/30 border-blue-500';
+            bgClass = 'bg-vital-cyan/10 border-vital-cyan';
           }
 
           return (
@@ -77,18 +77,18 @@ export function Screen4Equipment() {
             >
               <div className="flex items-start gap-2">
                 <div className={`w-5 h-5 rounded border flex items-center justify-center mt-0.5 shrink-0
-                  ${isSelected ? 'bg-blue-500 border-blue-400 text-white' : 'border-slate-500'}`}>
+                  ${isSelected ? 'bg-vital-cyan border-vital-cyan text-monitor-bg' : 'border-monitor-text/30'}`}>
                   {isSelected && <span className="text-xs">✓</span>}
                 </div>
                 <div className="min-w-0">
-                  <div className="text-sm font-medium text-slate-200 leading-tight">{item.name}</div>
-                  <div className="text-[10px] text-slate-400 mt-0.5">{item.specification}</div>
-                  <div className="text-[10px] text-slate-500">{item.manufacturer}</div>
+                  <div className="text-sm font-medium text-monitor-bright leading-tight">{item.name}</div>
+                  <div className="text-[10px] text-monitor-text/50 mt-0.5">{item.specification}</div>
+                  <div className="text-[10px] text-monitor-text/40">{item.manufacturer}</div>
                   {submitted && isRequired && !isSelected && (
-                    <div className="text-[10px] text-amber-400 mt-1">Missing - needed for this procedure</div>
+                    <div className="text-[10px] text-vital-amber mt-1">Missing - needed for this procedure</div>
                   )}
                   {submitted && !isRequired && isSelected && (
-                    <div className="text-[10px] text-red-400 mt-1">Not needed for this procedure</div>
+                    <div className="text-[10px] text-vital-red mt-1">Not needed for this procedure</div>
                   )}
                 </div>
               </div>
@@ -99,30 +99,30 @@ export function Screen4Equipment() {
 
       {/* Summary */}
       {submitted && (
-        <div className="bg-slate-800 rounded-lg p-4 border border-slate-700 slide-in">
-          <h3 className="text-sm font-semibold text-slate-300 mb-2">Equipment Score</h3>
-          <div className="flex gap-4 text-sm">
-            <span className="text-green-400">{correctCount} correct</span>
-            <span className="text-red-400">{extraCount} unnecessary</span>
-            <span className="text-amber-400">{missedCount} missed</span>
+        <div className="monitor-panel p-4 slide-in">
+          <h3 className="text-sm font-semibold text-monitor-text mb-2 font-clinical">Equipment Score</h3>
+          <div className="flex gap-4 text-sm font-clinical">
+            <span className="text-vital-green vital-glow-green">{correctCount} correct</span>
+            <span className="text-vital-red vital-glow-red">{extraCount} unnecessary</span>
+            <span className="text-vital-amber vital-glow-amber">{missedCount} missed</span>
           </div>
         </div>
       )}
 
       <div className="flex justify-between items-center">
-        <span className="text-xs text-slate-500">{selectedEquipment.length} items selected</span>
+        <span className="text-xs text-monitor-text/40 font-clinical">{selectedEquipment.length} items selected</span>
         {!submitted ? (
           <button
             onClick={handleSubmit}
             disabled={selectedEquipment.length === 0}
-            className="bg-blue-600 hover:bg-blue-500 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-semibold px-6 py-2 rounded-lg transition-colors"
+            className="bg-vital-cyan hover:bg-vital-cyan/80 disabled:bg-monitor-panel disabled:text-monitor-text/30 disabled:cursor-not-allowed text-monitor-bg font-semibold px-6 py-2 rounded-lg transition-colors"
           >
             Submit Equipment
           </button>
         ) : (
           <button
             onClick={advanceScreen}
-            className="bg-green-600 hover:bg-green-500 text-white font-semibold px-6 py-2 rounded-lg transition-colors"
+            className="bg-vital-green hover:bg-vital-green/80 text-monitor-bg font-semibold px-6 py-2 rounded-lg transition-colors"
           >
             Begin Intervention →
           </button>

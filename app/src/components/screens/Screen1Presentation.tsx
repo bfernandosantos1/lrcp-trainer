@@ -39,17 +39,17 @@ export function Screen1Presentation() {
   return (
     <div className="space-y-6">
       {/* Setting Banner */}
-      <div className="bg-gradient-to-r from-blue-900/50 to-slate-800/50 rounded-lg p-4 border border-blue-800/30">
+      <div className="bg-gradient-to-r from-vital-cyan/10 to-monitor-panel rounded-lg p-4 border border-vital-cyan/20">
         <div className="flex items-center gap-3">
           <span className="text-2xl">
             {activeCase.demographics.presentation === 'ed_consult' ? '🏥' :
              activeCase.demographics.presentation === 'on_call_phone' ? '📱' : '🏢'}
           </span>
           <div>
-            <h2 className="text-lg font-bold text-slate-100">
+            <h2 className="text-lg font-bold text-monitor-bright">
               {PRESENTATION_LABELS[activeCase.demographics.presentation]}
             </h2>
-            <p className="text-sm text-slate-400">{activeCase.title}</p>
+            <p className="text-sm text-monitor-text/50">New Consultation</p>
           </div>
         </div>
       </div>
@@ -62,25 +62,25 @@ export function Screen1Presentation() {
         />
 
         {/* Decision Panel */}
-        <div className="bg-slate-800 rounded-lg p-4">
-          <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">
+        <div className="monitor-panel p-4">
+          <h3 className="text-sm font-semibold text-vital-cyan uppercase tracking-wider mb-3 font-clinical">
             What is your initial management plan?
           </h3>
-          <p className="text-xs text-slate-400 mb-4">Select all that apply</p>
+          <p className="text-xs text-monitor-text/50 mb-4">Select all that apply</p>
 
           <div className="space-y-2">
             {shuffled.map(option => {
               const isSelected = selected.includes(option);
               const correct = isCorrect(option);
 
-              let bgClass = 'bg-slate-700/50 hover:bg-slate-700 border-slate-600';
+              let bgClass = 'bg-monitor-bg hover:bg-monitor-border/30 border-monitor-border';
               if (submitted) {
-                if (correct && isSelected) bgClass = 'bg-green-900/40 border-green-600';
-                else if (correct && !isSelected) bgClass = 'bg-green-900/20 border-green-700/50';
-                else if (!correct && isSelected) bgClass = 'bg-red-900/40 border-red-600';
-                else bgClass = 'bg-slate-700/30 border-slate-600/30';
+                if (correct && isSelected) bgClass = 'bg-vital-green/15 border-vital-green';
+                else if (correct && !isSelected) bgClass = 'bg-vital-green/5 border-vital-green/30';
+                else if (!correct && isSelected) bgClass = 'bg-vital-red/15 border-vital-red';
+                else bgClass = 'bg-monitor-bg/30 border-monitor-border/30';
               } else if (isSelected) {
-                bgClass = 'bg-blue-900/40 border-blue-500';
+                bgClass = 'bg-vital-cyan/15 border-vital-cyan';
               }
 
               return (
@@ -91,18 +91,18 @@ export function Screen1Presentation() {
                 >
                   <div className="flex items-center gap-2">
                     <div className={`w-4 h-4 rounded border flex items-center justify-center text-xs
-                      ${isSelected ? 'bg-blue-500 border-blue-400 text-white' : 'border-slate-500'}`}>
+                      ${isSelected ? 'bg-vital-cyan border-vital-cyan text-monitor-bg' : 'border-monitor-text/30'}`}>
                       {isSelected && '✓'}
                     </div>
-                    <span className={submitted && correct ? 'text-green-300' : 'text-slate-200'}>
+                    <span className={submitted && correct ? 'text-vital-green vital-glow-green' : 'text-monitor-bright'}>
                       {option}
                     </span>
                   </div>
                   {submitted && correct && isSelected && (
-                    <span className="text-xs text-green-400 ml-6">Correct</span>
+                    <span className="text-xs text-vital-green ml-6">Correct</span>
                   )}
                   {submitted && !correct && isSelected && (
-                    <span className="text-xs text-red-400 ml-6">Incorrect</span>
+                    <span className="text-xs text-vital-red ml-6">Incorrect</span>
                   )}
                 </button>
               );
@@ -111,9 +111,9 @@ export function Screen1Presentation() {
 
           {/* Explanation */}
           {submitted && (
-            <div className="mt-4 p-3 bg-slate-700/50 rounded-lg border border-slate-600/50 slide-in">
-              <h4 className="text-xs font-semibold text-amber-400 mb-1">Explanation</h4>
-              <p className="text-xs text-slate-300 leading-relaxed">{activeCase.screen1.explanation}</p>
+            <div className="mt-4 p-3 bg-monitor-bg rounded-lg border border-monitor-border/50 slide-in">
+              <h4 className="text-xs font-semibold text-vital-amber vital-glow-amber mb-1">Explanation</h4>
+              <p className="text-xs text-monitor-text leading-relaxed">{activeCase.screen1.explanation}</p>
             </div>
           )}
 
@@ -122,14 +122,14 @@ export function Screen1Presentation() {
               <button
                 onClick={handleSubmit}
                 disabled={selected.length === 0}
-                className="bg-blue-600 hover:bg-blue-500 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-semibold px-6 py-2 rounded-lg transition-colors"
+                className="bg-vital-cyan hover:bg-vital-cyan/80 disabled:bg-monitor-panel disabled:text-monitor-text/30 disabled:cursor-not-allowed text-monitor-bg font-semibold px-6 py-2 rounded-lg transition-colors"
               >
                 Submit
               </button>
             ) : (
               <button
                 onClick={handleContinue}
-                className="bg-green-600 hover:bg-green-500 text-white font-semibold px-6 py-2 rounded-lg transition-colors"
+                className="bg-vital-green hover:bg-vital-green/80 text-monitor-bg font-semibold px-6 py-2 rounded-lg transition-colors"
               >
                 Continue to Workup →
               </button>

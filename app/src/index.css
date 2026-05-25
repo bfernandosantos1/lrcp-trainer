@@ -2,6 +2,19 @@
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
+@theme {
+  --color-monitor-bg: #0a0e17;
+  --color-monitor-panel: #0d1321;
+  --color-monitor-border: #1a2744;
+  --color-monitor-text: #8ba4c7;
+  --color-monitor-bright: #c8ddf5;
+  --color-vital-green: #00d47b;
+  --color-vital-red: #ff3b4f;
+  --color-vital-amber: #ffb020;
+  --color-vital-blue: #2196f3;
+  --color-vital-cyan: #00e5ff;
+}
+
 :root {
   --monitor-bg: #0a0e17;
   --monitor-panel: #0d1321;

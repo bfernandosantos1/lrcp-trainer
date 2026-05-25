@@ -3,7 +3,6 @@ import { useGameStore } from '../../store/gameStore';
 
 export function Screen5Intervention() {
   const activeCase = useGameStore(s => s.game.activeCase)!;
-  const complication = useGameStore(s => s.game.complicationTriggered);
   const triggerComplication = useGameStore(s => s.triggerComplication);
   const setDecisions = useGameStore(s => s.setScreen5Decisions);
   const advanceScreen = useGameStore(s => s.advanceScreen);
@@ -21,11 +20,9 @@ export function Screen5Intervention() {
   useEffect(() => {
     if (visibleSteps < narrative.length) {
       if (hasComplication && visibleSteps === complicationStep && !complicationShown) {
-        // Pause here for complication
         return;
       }
       if (complicationShown && !submitted) {
-        // Wait for complication response
         return;
       }
       const timer = setTimeout(() => {
@@ -49,7 +46,6 @@ export function Screen5Intervention() {
   const handleComplicationResponse = () => {
     setDecisions([selectedResponse]);
     setSubmitted(true);
-    // Resume narrative
     setTimeout(() => {
       setVisibleSteps(v => v + 1);
     }, 1000);
@@ -69,25 +65,25 @@ export function Screen5Intervention() {
 
   return (
     <div className="space-y-4">
-      <div className="bg-gradient-to-r from-slate-800 to-slate-800/50 rounded-lg p-4 border border-slate-700/50">
-        <h2 className="text-lg font-bold text-slate-100">Procedure in Progress</h2>
-        <p className="text-sm text-slate-400">Follow the progress of your intervention.</p>
+      <div className="bg-gradient-to-r from-vital-green/10 to-monitor-panel rounded-lg p-4 border border-vital-green/20">
+        <h2 className="text-lg font-bold text-monitor-bright">Procedure in Progress</h2>
+        <p className="text-sm text-monitor-text/50">Follow the progress of your intervention.</p>
       </div>
 
       {/* Narrative Steps */}
-      <div className="bg-slate-800 rounded-lg p-4 space-y-3">
+      <div className="monitor-panel p-4 space-y-3">
         {narrative.slice(0, visibleSteps).map((step, i) => (
           <div key={i} className="flex gap-3 slide-in">
-            <div className="w-6 h-6 rounded-full bg-green-800 text-green-300 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+            <div className="w-6 h-6 rounded-full bg-vital-green/20 text-vital-green flex items-center justify-center text-xs font-bold font-clinical shrink-0 mt-0.5 border border-vital-green/30">
               {i + 1}
             </div>
-            <p className="text-sm text-slate-300 leading-relaxed">{step}</p>
+            <p className="text-sm text-monitor-text leading-relaxed">{step}</p>
           </div>
         ))}
 
         {visibleSteps < narrative.length && !complicationShown && (
-          <div className="flex items-center gap-2 text-slate-500 text-sm">
-            <div className="w-4 h-4 border-2 border-slate-500 border-t-transparent rounded-full animate-spin" />
+          <div className="flex items-center gap-2 text-monitor-text/40 text-sm">
+            <div className="w-4 h-4 border-2 border-vital-cyan border-t-transparent rounded-full animate-spin" />
             Procedure in progress...
           </div>
         )}
@@ -95,14 +91,14 @@ export function Screen5Intervention() {
 
       {/* Complication Alert */}
       {complicationShown && comp && !submitted && (
-        <div className="bg-red-900/30 border border-red-600 rounded-lg p-4 slide-in">
+        <div className="bg-vital-red/10 border border-vital-red rounded-lg p-4 slide-in">
           <div className="flex items-center gap-2 mb-3">
-            <span className="text-xl">⚠️</span>
-            <h3 className="text-sm font-bold text-red-400 uppercase">Complication</h3>
+            <span className="text-xl blink">⚠️</span>
+            <h3 className="text-sm font-bold text-vital-red vital-glow-red uppercase font-clinical">Complication</h3>
           </div>
-          <p className="text-sm text-red-200 mb-4">{comp.narrative}</p>
+          <p className="text-sm text-vital-red/80 mb-4">{comp.narrative}</p>
 
-          <h4 className="text-xs font-semibold text-slate-300 mb-2">How do you respond?</h4>
+          <h4 className="text-xs font-semibold text-monitor-text mb-2">How do you respond?</h4>
           <div className="space-y-2">
             {allResponses.map(response => (
               <button
@@ -110,8 +106,8 @@ export function Screen5Intervention() {
                 onClick={() => setSelectedResponse(response)}
                 className={`w-full text-left p-2.5 rounded-lg border text-sm transition-colors
                   ${selectedResponse === response
-                    ? 'bg-blue-900/40 border-blue-500 text-blue-200'
-                    : 'bg-slate-700/50 border-slate-600 text-slate-300 hover:bg-slate-700'
+                    ? 'bg-vital-cyan/15 border-vital-cyan text-vital-cyan'
+                    : 'bg-monitor-bg border-monitor-border text-monitor-text hover:bg-monitor-border/30'
                   }`}
               >
                 {response}
@@ -123,7 +119,7 @@ export function Screen5Intervention() {
             <button
               onClick={handleComplicationResponse}
               disabled={!selectedResponse}
-              className="bg-red-600 hover:bg-red-500 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-semibold px-6 py-2 rounded-lg transition-colors"
+              className="bg-vital-red hover:bg-vital-red/80 disabled:bg-monitor-panel disabled:text-monitor-text/30 disabled:cursor-not-allowed text-white font-semibold px-6 py-2 rounded-lg transition-colors"
             >
               Respond
             </button>
@@ -135,17 +131,17 @@ export function Screen5Intervention() {
       {submitted && comp && (
         <div className={`rounded-lg p-4 border slide-in ${
           comp.correctResponses.includes(selectedResponse)
-            ? 'bg-green-900/20 border-green-600'
-            : 'bg-red-900/20 border-red-600'
+            ? 'bg-vital-green/10 border-vital-green'
+            : 'bg-vital-red/10 border-vital-red'
         }`}>
           <div className="flex items-center gap-2 mb-2">
             {comp.correctResponses.includes(selectedResponse) ? (
-              <span className="text-green-400 font-semibold text-sm">Correct response!</span>
+              <span className="text-vital-green vital-glow-green font-semibold text-sm">Correct response!</span>
             ) : (
-              <span className="text-red-400 font-semibold text-sm">Suboptimal response</span>
+              <span className="text-vital-red vital-glow-red font-semibold text-sm">Suboptimal response</span>
             )}
           </div>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-monitor-text/60">
             Best responses: {comp.correctResponses.join('; ')}
           </p>
         </div>
@@ -156,7 +152,7 @@ export function Screen5Intervention() {
         <div className="flex justify-end">
           <button
             onClick={handleContinue}
-            className="bg-green-600 hover:bg-green-500 text-white font-semibold px-6 py-2 rounded-lg transition-colors"
+            className="bg-vital-green hover:bg-vital-green/80 text-monitor-bg font-semibold px-6 py-2 rounded-lg transition-colors"
           >
             Continue to Postop Management →
           </button>

@@ -11,42 +11,43 @@ export function Header() {
     : 100;
 
   return (
-    <header className="bg-slate-800/80 backdrop-blur-sm border-b border-slate-700 px-4 py-3 sticky top-0 z-50">
+    <header className="bg-monitor-panel/90 backdrop-blur-sm border-b border-monitor-border px-4 py-3 sticky top-0 z-50">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <h1 className="text-lg font-bold text-blue-400 tracking-tight">LRCP Trainer</h1>
-          <span className="text-xs text-slate-500 hidden sm:inline">Laparoscopic Reverse Cholangiopancreatography</span>
+          <h1 className="text-lg font-bold text-vital-cyan vital-glow-cyan tracking-tight font-clinical">LRCP Trainer</h1>
+          <span className="text-xs text-monitor-text/50 hidden sm:inline">Laparoscopic Reverse Cholangiopancreatography</span>
         </div>
 
         <div className="flex items-center gap-4">
           {player.name && (
             <div className="text-right">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold text-amber-400">{player.currentLevel}</span>
-                <span className="text-xs text-slate-400">{levelConfig.description}</span>
+                <span className="text-sm font-semibold text-vital-amber vital-glow-amber">{player.currentLevel}</span>
+                <span className="text-xs text-monitor-text/50">{levelConfig.description}</span>
               </div>
               <div className="flex items-center gap-2 mt-1">
-                <div className="w-32 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                <div className="w-32 h-1.5 bg-monitor-bg rounded-full overflow-hidden border border-monitor-border/50">
                   <div
-                    className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full transition-all duration-500"
+                    className="h-full bg-vital-cyan rounded-full transition-all duration-500"
                     style={{ width: `${Math.min(100, xpProgress)}%` }}
                   />
                 </div>
-                <span className="text-xs text-slate-500">{player.xp} XP</span>
+                <span className="text-xs text-monitor-text/50 font-clinical">{player.xp} XP</span>
               </div>
             </div>
           )}
 
           {player.casesCompleted > 0 && (
-            <div className="text-xs text-slate-500 border-l border-slate-700 pl-3">
+            <div className="text-xs text-monitor-text/50 border-l border-monitor-border pl-3">
               <div>{player.casesCompleted} cases</div>
               {player.streakCount > 0 && (
-                <div className="text-amber-400">{player.streakCount} streak</div>
+                <div className="text-vital-amber vital-glow-amber">{player.streakCount} streak</div>
               )}
             </div>
           )}
         </div>
       </div>
+      <div className="ekg-line mt-2" />
     </header>
   );
 }

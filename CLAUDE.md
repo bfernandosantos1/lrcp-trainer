@@ -68,8 +68,8 @@ Screen 3 (IOC interpretation) is the core educational screen at 35% weight. Scre
 
 ## Clinical Rules
 
-- **Severe cholangitis** (Reynolds' pentad / hemodynamic instability): correct answer is ERCP, not surgery.
-- **Mild/moderate cholangitis** (Charcot's triad, hemodynamically stable): surgery with IOC and possible LCBDE is acceptable.
+- **Severe cholangitis** (Reynolds' pentad / hemodynamic instability) with **normal anatomy**: correct answer is ERCP, not surgery. In **Roux-en-Y anatomy**, standard ERCP is not feasible — surgical source control with biliary decompression (stent as bridge, rendezvous lap-assisted ERCP) is appropriate even in severe cholangitis (see Case 12).
+- **Mild/moderate cholangitis** (Charcot's triad, hemodynamically stable): surgery with IOC and possible LCBDE is acceptable after adequate resuscitation (see Case 05).
 - IOC descriptions in case files must accurately describe what is visible in the corresponding real IOC image — do not fabricate findings that aren't in the image.
 - Screen 1 must NOT reveal the diagnosis or case title to the learner — they should figure it out from the presentation.
 
@@ -83,10 +83,15 @@ The UI should evoke a **surgeon's work environment** — OR monitors, clinical d
 - `noUnusedLocals` and `noUnusedParameters` are enforced
 - `erasableSyntaxOnly: true` — no `const enum` or other legacy TS-only syntax
 
+## Completed Work
+
+- UI uses OR monitor aesthetic via Tailwind v4 `@theme` block mapping CSS custom properties (`--monitor-bg`, `--vital-green`, etc.) to Tailwind color classes
+- Loading/transition screen (`LoadingScreen.tsx`) shows biliary surgery history trivia between cases (20 facts in `triviaFacts.ts`, auto-advance 4s, skip after 1.5s)
+- Screen 1 hides case title/diagnosis — shows "New Consultation" instead
+- IOC image descriptions reviewed against actual images — consistent, but exact measurements should be verified by surgeon
+- Cholangitis paths verified: Case 05 (mild, Charcot) → surgical LCBDE; Case 12 (severe, Reynolds + Roux-en-Y) → surgical source control (ERCP not anatomically feasible)
+
 ## Pending Work
 
-- [ ] IOC image descriptions in case files need review to ensure they match what's actually visible in each image
-- [ ] UI overhaul: restyle all screens with surgical/OR monitor aesthetic (CSS vars are in place, components need updating)
-- [ ] Add loading/transition screen with biliary surgery history trivia
-- [ ] Screen 1 should not show case title — remove diagnosis spoiler from presentation banner
-- [ ] Case 05 (cholangitis): verify severe cholangitis → ERCP path is correctly implemented
+- [ ] IOC image measurement accuracy — exact mm values for CBD, cystic duct, and stone sizes need surgeon verification against actual images
+- [ ] Add test framework and unit tests

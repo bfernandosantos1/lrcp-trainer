@@ -16,23 +16,21 @@ export function Screen2Workup() {
     setSubmitted(true);
   };
 
-  const isCorrect = selectedOption === activeCase.screen2.correctNextStep;
-
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-slate-800 to-slate-800/50 rounded-lg p-4 border border-slate-700/50">
-        <h2 className="text-lg font-bold text-slate-100">Workup Results</h2>
-        <p className="text-sm text-slate-400">Review the laboratory and imaging results below.</p>
+      <div className="bg-gradient-to-r from-vital-blue/10 to-monitor-panel rounded-lg p-4 border border-vital-blue/20">
+        <h2 className="text-lg font-bold text-monitor-bright">Workup Results</h2>
+        <p className="text-sm text-monitor-text/50">Review the laboratory and imaging results below.</p>
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex gap-1 bg-slate-800 rounded-lg p-1">
+      <div className="flex gap-1 monitor-panel p-1">
         {['labs', 'imaging'].map(tab => (
           <button
             key={tab}
             onClick={() => setSelectedTab(tab as 'labs' | 'imaging')}
             className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors capitalize
-              ${selectedTab === tab ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-200'}`}
+              ${selectedTab === tab ? 'bg-vital-cyan text-monitor-bg' : 'text-monitor-text/50 hover:text-monitor-bright'}`}
           >
             {tab}
           </button>
@@ -43,21 +41,21 @@ export function Screen2Workup() {
       {selectedTab === 'labs' && <LabPanel labs={activeCase.labs} />}
 
       {selectedTab === 'imaging' && (
-        <div className="bg-slate-800 rounded-lg p-4 space-y-4">
-          <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider">Imaging Results</h3>
+        <div className="monitor-panel p-4 space-y-4">
+          <h3 className="text-sm font-semibold text-vital-cyan uppercase tracking-wider font-clinical">Imaging Results</h3>
 
           {activeCase.imaging.ruqUltrasound && (
-            <div className="bg-slate-700/50 rounded p-3">
-              <h4 className="text-xs font-semibold text-blue-400 mb-1">RUQ Ultrasound</h4>
-              <p className="text-sm text-slate-300">{activeCase.imaging.ruqUltrasound}</p>
+            <div className="bg-monitor-bg rounded p-3 border border-monitor-border/50">
+              <h4 className="text-xs font-semibold text-vital-cyan mb-1">RUQ Ultrasound</h4>
+              <p className="text-sm text-monitor-text">{activeCase.imaging.ruqUltrasound}</p>
             </div>
           )}
 
           {activeCase.imaging.ct && (
             <div className="space-y-3">
-              <div className="bg-slate-700/50 rounded p-3">
-                <h4 className="text-xs font-semibold text-blue-400 mb-1">CT Abdomen/Pelvis</h4>
-                <p className="text-sm text-slate-300">{activeCase.imaging.ct.description}</p>
+              <div className="bg-monitor-bg rounded p-3 border border-monitor-border/50">
+                <h4 className="text-xs font-semibold text-vital-cyan mb-1">CT Abdomen/Pelvis</h4>
+                <p className="text-sm text-monitor-text">{activeCase.imaging.ct.description}</p>
               </div>
               {activeCase.imaging.ct.imagePath && (
                 <ImageViewer
@@ -70,9 +68,9 @@ export function Screen2Workup() {
           )}
 
           {activeCase.imaging.mrcp && (
-            <div className="bg-slate-700/50 rounded p-3">
-              <h4 className="text-xs font-semibold text-blue-400 mb-1">MRCP</h4>
-              <p className="text-sm text-slate-300">{activeCase.imaging.mrcp}</p>
+            <div className="bg-monitor-bg rounded p-3 border border-monitor-border/50">
+              <h4 className="text-xs font-semibold text-vital-cyan mb-1">MRCP</h4>
+              <p className="text-sm text-monitor-text">{activeCase.imaging.mrcp}</p>
             </div>
           )}
         </div>
@@ -80,26 +78,26 @@ export function Screen2Workup() {
 
       {/* Key Findings Summary */}
       {submitted && (
-        <div className="bg-slate-800 rounded-lg p-4 slide-in">
-          <h3 className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-2">Key Findings</h3>
+        <div className="monitor-panel p-4 slide-in">
+          <h3 className="text-xs font-semibold text-vital-amber vital-glow-amber uppercase tracking-wider mb-2 font-clinical">Key Findings</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <div>
-              <h4 className="text-xs text-slate-400 mb-1">Abnormal Labs</h4>
+              <h4 className="text-xs text-monitor-text/50 mb-1">Abnormal Labs</h4>
               <ul className="space-y-1">
                 {activeCase.screen2.abnormalLabs.map(lab => (
-                  <li key={lab} className="text-xs text-red-400 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 bg-red-400 rounded-full" />
+                  <li key={lab} className="text-xs text-vital-red flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-vital-red rounded-full" />
                     {lab}
                   </li>
                 ))}
               </ul>
             </div>
             <div>
-              <h4 className="text-xs text-slate-400 mb-1">Imaging Findings</h4>
+              <h4 className="text-xs text-monitor-text/50 mb-1">Imaging Findings</h4>
               <ul className="space-y-1">
                 {activeCase.screen2.imagingFindings.map(finding => (
-                  <li key={finding} className="text-xs text-blue-400 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 bg-blue-400 rounded-full" />
+                  <li key={finding} className="text-xs text-vital-cyan flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-vital-cyan rounded-full" />
                     {finding}
                   </li>
                 ))}
@@ -110,8 +108,8 @@ export function Screen2Workup() {
       )}
 
       {/* Decision */}
-      <div className="bg-slate-800 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">
+      <div className="monitor-panel p-4">
+        <h3 className="text-sm font-semibold text-vital-cyan uppercase tracking-wider mb-3 font-clinical">
           What is your next step?
         </h3>
         <div className="space-y-2">
@@ -119,13 +117,13 @@ export function Screen2Workup() {
             const isSelected = selectedOption === option;
             const isCorrectOption = option === activeCase.screen2.correctNextStep;
 
-            let bgClass = 'bg-slate-700/50 hover:bg-slate-700 border-slate-600';
+            let bgClass = 'bg-monitor-bg hover:bg-monitor-border/30 border-monitor-border';
             if (submitted) {
-              if (isCorrectOption) bgClass = 'bg-green-900/40 border-green-600';
-              else if (isSelected && !isCorrectOption) bgClass = 'bg-red-900/40 border-red-600';
-              else bgClass = 'bg-slate-700/30 border-slate-600/30';
+              if (isCorrectOption) bgClass = 'bg-vital-green/15 border-vital-green';
+              else if (isSelected && !isCorrectOption) bgClass = 'bg-vital-red/15 border-vital-red';
+              else bgClass = 'bg-monitor-bg/30 border-monitor-border/30';
             } else if (isSelected) {
-              bgClass = 'bg-blue-900/40 border-blue-500';
+              bgClass = 'bg-vital-cyan/15 border-vital-cyan';
             }
 
             return (
@@ -136,10 +134,10 @@ export function Screen2Workup() {
               >
                 <div className="flex items-center gap-2">
                   <div className={`w-4 h-4 rounded-full border flex items-center justify-center
-                    ${isSelected ? 'bg-blue-500 border-blue-400' : 'border-slate-500'}`}>
-                    {isSelected && <div className="w-2 h-2 bg-white rounded-full" />}
+                    ${isSelected ? 'bg-vital-cyan border-vital-cyan' : 'border-monitor-text/30'}`}>
+                    {isSelected && <div className="w-2 h-2 bg-monitor-bg rounded-full" />}
                   </div>
-                  <span className="text-slate-200">{option}</span>
+                  <span className="text-monitor-bright">{option}</span>
                 </div>
               </button>
             );
@@ -147,9 +145,9 @@ export function Screen2Workup() {
         </div>
 
         {submitted && (
-          <div className="mt-4 p-3 bg-slate-700/50 rounded-lg border border-slate-600/50 slide-in">
-            <h4 className="text-xs font-semibold text-amber-400 mb-1">Explanation</h4>
-            <p className="text-xs text-slate-300 leading-relaxed">{activeCase.screen2.explanation}</p>
+          <div className="mt-4 p-3 bg-monitor-bg rounded-lg border border-monitor-border/50 slide-in">
+            <h4 className="text-xs font-semibold text-vital-amber vital-glow-amber mb-1">Explanation</h4>
+            <p className="text-xs text-monitor-text leading-relaxed">{activeCase.screen2.explanation}</p>
           </div>
         )}
 
@@ -158,14 +156,14 @@ export function Screen2Workup() {
             <button
               onClick={handleSubmit}
               disabled={!selectedOption}
-              className="bg-blue-600 hover:bg-blue-500 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-semibold px-6 py-2 rounded-lg transition-colors"
+              className="bg-vital-cyan hover:bg-vital-cyan/80 disabled:bg-monitor-panel disabled:text-monitor-text/30 disabled:cursor-not-allowed text-monitor-bg font-semibold px-6 py-2 rounded-lg transition-colors"
             >
               Submit
             </button>
           ) : (
             <button
               onClick={advanceScreen}
-              className="bg-green-600 hover:bg-green-500 text-white font-semibold px-6 py-2 rounded-lg transition-colors"
+              className="bg-vital-green hover:bg-vital-green/80 text-monitor-bg font-semibold px-6 py-2 rounded-lg transition-colors"
             >
               Continue to OR →
             </button>

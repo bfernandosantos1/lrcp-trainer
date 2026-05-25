@@ -42,157 +42,126 @@ export function Screen6Postop() {
 
   const isComplete = selectedLabs.length > 0 && selectedDiet && selectedActivity && selectedDisposition;
 
+  const checkboxClass = (isSelected: boolean, isCorrectOption: boolean, wasSubmitted: boolean) => {
+    if (wasSubmitted) {
+      if (isCorrectOption && isSelected) return 'bg-vital-green/15 border-vital-green';
+      if (isCorrectOption && !isSelected) return 'bg-vital-amber/10 border-vital-amber/50';
+      if (!isCorrectOption && isSelected) return 'bg-vital-red/10 border-vital-red';
+      return 'bg-monitor-bg border-monitor-border';
+    }
+    if (isSelected) return 'bg-vital-cyan/15 border-vital-cyan';
+    return 'bg-monitor-bg hover:bg-monitor-border/30 border-monitor-border';
+  };
+
+  const radioClass = (isSelected: boolean, isCorrectOption: boolean, wasSubmitted: boolean) => {
+    if (wasSubmitted) {
+      if (isCorrectOption) return 'bg-vital-green/15 border-vital-green';
+      if (isSelected) return 'bg-vital-red/10 border-vital-red';
+      return 'bg-monitor-bg border-monitor-border';
+    }
+    if (isSelected) return 'bg-vital-cyan/15 border-vital-cyan';
+    return 'bg-monitor-bg hover:bg-monitor-border/30 border-monitor-border';
+  };
+
   return (
     <div className="space-y-4">
-      <div className="bg-gradient-to-r from-slate-800 to-slate-800/50 rounded-lg p-4 border border-slate-700/50">
-        <h2 className="text-lg font-bold text-slate-100">Postoperative Management</h2>
-        <p className="text-sm text-slate-400">Write your postoperative orders for this patient.</p>
+      <div className="bg-gradient-to-r from-vital-blue/10 to-monitor-panel rounded-lg p-4 border border-vital-blue/20">
+        <h2 className="text-lg font-bold text-monitor-bright">Postoperative Management</h2>
+        <p className="text-sm text-monitor-text/50">Write your postoperative orders for this patient.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* AM Labs */}
-        <div className="bg-slate-800 rounded-lg p-4">
-          <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">AM Laboratory Orders</h3>
+        <div className="monitor-panel p-4">
+          <h3 className="text-xs font-semibold text-vital-cyan uppercase tracking-wider mb-2 font-clinical">AM Laboratory Orders</h3>
           <div className="space-y-1.5">
-            {LAB_OPTIONS.map(lab => {
-              const isSelected = selectedLabs.includes(lab);
-              const isCorrectOption = correct.labs.includes(lab);
-              let cls = 'bg-slate-700/50 border-slate-600 hover:bg-slate-700';
-              if (submitted) {
-                if (isCorrectOption && isSelected) cls = 'bg-green-900/40 border-green-600';
-                else if (isCorrectOption && !isSelected) cls = 'bg-amber-900/20 border-amber-600/50';
-                else if (!isCorrectOption && isSelected) cls = 'bg-red-900/30 border-red-600';
-              } else if (isSelected) cls = 'bg-blue-900/40 border-blue-500';
-
-              return (
-                <button
-                  key={lab}
-                  onClick={() => !submitted && toggleLab(lab)}
-                  disabled={submitted}
-                  className={`w-full text-left p-2 rounded border text-sm transition-colors flex items-center gap-2 ${cls}`}
-                >
-                  <div className={`w-4 h-4 rounded border flex items-center justify-center text-xs ${isSelected ? 'bg-blue-500 border-blue-400 text-white' : 'border-slate-500'}`}>
-                    {isSelected && '✓'}
-                  </div>
-                  {lab}
-                </button>
-              );
-            })}
+            {LAB_OPTIONS.map(lab => (
+              <button
+                key={lab}
+                onClick={() => !submitted && toggleLab(lab)}
+                disabled={submitted}
+                className={`w-full text-left p-2 rounded border text-sm transition-colors flex items-center gap-2 text-monitor-bright ${checkboxClass(selectedLabs.includes(lab), correct.labs.includes(lab), submitted)}`}
+              >
+                <div className={`w-4 h-4 rounded border flex items-center justify-center text-xs ${selectedLabs.includes(lab) ? 'bg-vital-cyan border-vital-cyan text-monitor-bg' : 'border-monitor-text/30'}`}>
+                  {selectedLabs.includes(lab) && '✓'}
+                </div>
+                {lab}
+              </button>
+            ))}
           </div>
         </div>
 
         <div className="space-y-4">
           {/* Diet */}
-          <div className="bg-slate-800 rounded-lg p-4">
-            <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Diet</h3>
+          <div className="monitor-panel p-4">
+            <h3 className="text-xs font-semibold text-vital-cyan uppercase tracking-wider mb-2 font-clinical">Diet</h3>
             <div className="space-y-1.5">
-              {DIET_OPTIONS.map(diet => {
-                const isSelected = selectedDiet === diet;
-                const isCorrectOption = correct.diet === diet;
-                let cls = 'bg-slate-700/50 border-slate-600 hover:bg-slate-700';
-                if (submitted) {
-                  if (isCorrectOption) cls = 'bg-green-900/40 border-green-600';
-                  else if (isSelected) cls = 'bg-red-900/30 border-red-600';
-                } else if (isSelected) cls = 'bg-blue-900/40 border-blue-500';
-
-                return (
-                  <button
-                    key={diet}
-                    onClick={() => !submitted && setSelectedDiet(diet)}
-                    disabled={submitted}
-                    className={`w-full text-left p-2 rounded border text-sm transition-colors ${cls}`}
-                  >
-                    {diet}
-                  </button>
-                );
-              })}
+              {DIET_OPTIONS.map(diet => (
+                <button
+                  key={diet}
+                  onClick={() => !submitted && setSelectedDiet(diet)}
+                  disabled={submitted}
+                  className={`w-full text-left p-2 rounded border text-sm transition-colors text-monitor-bright ${radioClass(selectedDiet === diet, correct.diet === diet, submitted)}`}
+                >
+                  {diet}
+                </button>
+              ))}
             </div>
           </div>
 
           {/* Activity */}
-          <div className="bg-slate-800 rounded-lg p-4">
-            <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Activity</h3>
+          <div className="monitor-panel p-4">
+            <h3 className="text-xs font-semibold text-vital-cyan uppercase tracking-wider mb-2 font-clinical">Activity</h3>
             <div className="space-y-1.5">
-              {ACTIVITY_OPTIONS.map(act => {
-                const isSelected = selectedActivity === act;
-                const isCorrectOption = correct.activity === act;
-                let cls = 'bg-slate-700/50 border-slate-600 hover:bg-slate-700';
-                if (submitted) {
-                  if (isCorrectOption) cls = 'bg-green-900/40 border-green-600';
-                  else if (isSelected) cls = 'bg-red-900/30 border-red-600';
-                } else if (isSelected) cls = 'bg-blue-900/40 border-blue-500';
-
-                return (
-                  <button
-                    key={act}
-                    onClick={() => !submitted && setSelectedActivity(act)}
-                    disabled={submitted}
-                    className={`w-full text-left p-2 rounded border text-sm transition-colors ${cls}`}
-                  >
-                    {act}
-                  </button>
-                );
-              })}
+              {ACTIVITY_OPTIONS.map(act => (
+                <button
+                  key={act}
+                  onClick={() => !submitted && setSelectedActivity(act)}
+                  disabled={submitted}
+                  className={`w-full text-left p-2 rounded border text-sm transition-colors text-monitor-bright ${radioClass(selectedActivity === act, correct.activity === act, submitted)}`}
+                >
+                  {act}
+                </button>
+              ))}
             </div>
           </div>
         </div>
       </div>
 
       {/* Disposition */}
-      <div className="bg-slate-800 rounded-lg p-4">
-        <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Disposition</h3>
+      <div className="monitor-panel p-4">
+        <h3 className="text-xs font-semibold text-vital-cyan uppercase tracking-wider mb-2 font-clinical">Disposition</h3>
         <div className="grid grid-cols-2 gap-1.5">
-          {DISPOSITION_OPTIONS.map(disp => {
-            const isSelected = selectedDisposition === disp;
-            const isCorrectOption = correct.disposition === disp;
-            let cls = 'bg-slate-700/50 border-slate-600 hover:bg-slate-700';
-            if (submitted) {
-              if (isCorrectOption) cls = 'bg-green-900/40 border-green-600';
-              else if (isSelected) cls = 'bg-red-900/30 border-red-600';
-            } else if (isSelected) cls = 'bg-blue-900/40 border-blue-500';
-
-            return (
-              <button
-                key={disp}
-                onClick={() => !submitted && setSelectedDisposition(disp)}
-                disabled={submitted}
-                className={`text-left p-2 rounded border text-sm transition-colors ${cls}`}
-              >
-                {disp}
-              </button>
-            );
-          })}
+          {DISPOSITION_OPTIONS.map(disp => (
+            <button
+              key={disp}
+              onClick={() => !submitted && setSelectedDisposition(disp)}
+              disabled={submitted}
+              className={`text-left p-2 rounded border text-sm transition-colors text-monitor-bright ${radioClass(selectedDisposition === disp, correct.disposition === disp, submitted)}`}
+            >
+              {disp}
+            </button>
+          ))}
         </div>
       </div>
 
       {/* Additional Orders */}
-      <div className="bg-slate-800 rounded-lg p-4">
-        <h3 className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Additional Orders</h3>
+      <div className="monitor-panel p-4">
+        <h3 className="text-xs font-semibold text-vital-cyan uppercase tracking-wider mb-2 font-clinical">Additional Orders</h3>
         <div className="grid grid-cols-2 gap-1.5">
-          {ADDITIONAL_OPTIONS.map(order => {
-            const isSelected = selectedAdditional.includes(order);
-            const isCorrectOption = correct.additionalOrders.includes(order);
-            let cls = 'bg-slate-700/50 border-slate-600 hover:bg-slate-700';
-            if (submitted) {
-              if (isCorrectOption && isSelected) cls = 'bg-green-900/40 border-green-600';
-              else if (isCorrectOption && !isSelected) cls = 'bg-amber-900/20 border-amber-600/50';
-              else if (!isCorrectOption && isSelected) cls = 'bg-red-900/30 border-red-600';
-            } else if (isSelected) cls = 'bg-blue-900/40 border-blue-500';
-
-            return (
-              <button
-                key={order}
-                onClick={() => !submitted && toggleAdditional(order)}
-                disabled={submitted}
-                className={`text-left p-2 rounded border text-sm transition-colors flex items-center gap-2 ${cls}`}
-              >
-                <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center text-[10px] ${isSelected ? 'bg-blue-500 border-blue-400 text-white' : 'border-slate-500'}`}>
-                  {isSelected && '✓'}
-                </div>
-                {order}
-              </button>
-            );
-          })}
+          {ADDITIONAL_OPTIONS.map(order => (
+            <button
+              key={order}
+              onClick={() => !submitted && toggleAdditional(order)}
+              disabled={submitted}
+              className={`text-left p-2 rounded border text-sm transition-colors flex items-center gap-2 text-monitor-bright ${checkboxClass(selectedAdditional.includes(order), correct.additionalOrders.includes(order), submitted)}`}
+            >
+              <div className={`w-3.5 h-3.5 rounded border flex items-center justify-center text-[10px] ${selectedAdditional.includes(order) ? 'bg-vital-cyan border-vital-cyan text-monitor-bg' : 'border-monitor-text/30'}`}>
+                {selectedAdditional.includes(order) && '✓'}
+              </div>
+              {order}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -201,14 +170,14 @@ export function Screen6Postop() {
           <button
             onClick={handleSubmit}
             disabled={!isComplete}
-            className="bg-blue-600 hover:bg-blue-500 disabled:bg-slate-600 disabled:cursor-not-allowed text-white font-semibold px-6 py-2 rounded-lg transition-colors"
+            className="bg-vital-cyan hover:bg-vital-cyan/80 disabled:bg-monitor-panel disabled:text-monitor-text/30 disabled:cursor-not-allowed text-monitor-bg font-semibold px-6 py-2 rounded-lg transition-colors"
           >
             Submit Orders
           </button>
         ) : (
           <button
             onClick={advanceScreen}
-            className="bg-green-600 hover:bg-green-500 text-white font-semibold px-6 py-2 rounded-lg transition-colors"
+            className="bg-vital-green hover:bg-vital-green/80 text-monitor-bg font-semibold px-6 py-2 rounded-lg transition-colors"
           >
             Continue to Debrief →
           </button>

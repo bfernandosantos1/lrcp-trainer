@@ -18,7 +18,7 @@ export function ProgressStepper({ currentScreen }: Props) {
   const screens: ScreenNumber[] = [1, 2, 3, 4, 5, 6, 7];
 
   return (
-    <div className="bg-slate-800/50 border-b border-slate-700/50 px-4 py-2">
+    <div className="bg-monitor-panel/50 border-b border-monitor-border/50 px-4 py-2">
       <div className="max-w-4xl mx-auto flex items-center justify-between">
         {screens.map((screen, i) => {
           const isActive = screen === currentScreen;
@@ -29,24 +29,24 @@ export function ProgressStepper({ currentScreen }: Props) {
             <div key={screen} className="flex items-center">
               <div className="flex flex-col items-center">
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all
+                  className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold font-clinical transition-all
                     ${isActive
                       ? isCore
-                        ? 'bg-amber-500 text-white ring-2 ring-amber-400/50 pulse-glow'
-                        : 'bg-blue-500 text-white ring-2 ring-blue-400/50'
+                        ? 'bg-vital-amber text-monitor-bg ring-2 ring-vital-amber/50 pulse-glow'
+                        : 'bg-vital-cyan text-monitor-bg ring-2 ring-vital-cyan/50'
                       : isCompleted
-                        ? 'bg-green-600 text-white'
-                        : 'bg-slate-700 text-slate-400'
+                        ? 'bg-vital-green text-monitor-bg'
+                        : 'bg-monitor-panel text-monitor-text/50 border border-monitor-border'
                     }`}
                 >
                   {isCompleted ? '✓' : screen}
                 </div>
-                <span className={`text-[10px] mt-1 ${isActive ? 'text-blue-300 font-semibold' : 'text-slate-500'}`}>
+                <span className={`text-[10px] mt-1 ${isActive ? 'text-vital-cyan font-semibold' : 'text-monitor-text/40'}`}>
                   {SCREEN_LABELS[screen]}
                 </span>
               </div>
               {i < screens.length - 1 && (
-                <div className={`w-6 sm:w-10 h-0.5 mx-1 ${isCompleted ? 'bg-green-600' : 'bg-slate-700'}`} />
+                <div className={`w-6 sm:w-10 h-0.5 mx-1 ${isCompleted ? 'bg-vital-green' : 'bg-monitor-border'}`} />
               )}
             </div>
           );

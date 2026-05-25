@@ -48,13 +48,19 @@ export function Screen7Debrief() {
 
   if (!result) return null;
 
-  const { scores, total, xp, leveledUp, newLevel } = result;
+  const { scores, total, xp, newLevel } = result;
   const nextLevel = getNextLevel(player.currentLevel);
 
   const getScoreColor = (score: number) => {
-    if (score >= 80) return 'bg-green-500';
-    if (score >= 50) return 'bg-amber-500';
-    return 'bg-red-500';
+    if (score >= 80) return 'bg-vital-green';
+    if (score >= 50) return 'bg-vital-amber';
+    return 'bg-vital-red';
+  };
+
+  const getScoreTextColor = (score: number) => {
+    if (score >= 80) return 'text-vital-green vital-glow-green';
+    if (score >= 50) return 'text-vital-amber vital-glow-amber';
+    return 'text-vital-red vital-glow-red';
   };
 
   const getGrade = (score: number) => {
@@ -75,40 +81,40 @@ export function Screen7Debrief() {
       {/* Level Up Overlay */}
       {showLevelUp && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 fade-in" onClick={() => setShowLevelUp(false)}>
-          <div className="bg-gradient-to-b from-amber-900/80 to-slate-900 rounded-2xl p-8 text-center level-up-animate border border-amber-500/50 max-w-sm mx-4">
+          <div className="bg-gradient-to-b from-vital-amber/20 to-monitor-bg rounded-2xl p-8 text-center level-up-animate border border-vital-amber/50 max-w-sm mx-4 monitor-panel">
             <div className="text-5xl mb-4">🎉</div>
-            <h2 className="text-2xl font-bold text-amber-400 mb-2">Level Up!</h2>
-            <p className="text-slate-300 mb-1">You've been promoted to</p>
-            <p className="text-3xl font-bold text-white">{newLevel}</p>
-            <p className="text-sm text-slate-400 mt-4">Click anywhere to continue</p>
+            <h2 className="text-2xl font-bold text-vital-amber vital-glow-amber mb-2 font-clinical">Level Up!</h2>
+            <p className="text-monitor-text mb-1">You've been promoted to</p>
+            <p className="text-3xl font-bold text-monitor-bright">{newLevel}</p>
+            <p className="text-sm text-monitor-text/40 mt-4">Click anywhere to continue</p>
           </div>
         </div>
       )}
 
       {/* Header with Grade */}
-      <div className="bg-gradient-to-r from-slate-800 to-slate-800/50 rounded-lg p-6 border border-slate-700/50 text-center">
-        <h2 className="text-lg font-bold text-slate-100 mb-1">Case Debrief</h2>
-        <p className="text-sm text-slate-400 mb-4">{activeCase.title}</p>
+      <div className="bg-gradient-to-r from-vital-cyan/10 to-monitor-panel rounded-lg p-6 border border-vital-cyan/20 text-center">
+        <h2 className="text-lg font-bold text-monitor-bright mb-1">Case Debrief</h2>
+        <p className="text-sm text-monitor-text/50 mb-4">{activeCase.title}</p>
         <div className="flex items-center justify-center gap-6">
           <div>
-            <div className={`text-5xl font-bold ${total >= 80 ? 'text-green-400' : total >= 50 ? 'text-amber-400' : 'text-red-400'}`}>
+            <div className={`text-5xl font-bold font-clinical ${getScoreTextColor(total)}`}>
               {getGrade(total)}
             </div>
-            <div className="text-sm text-slate-400 mt-1">{total}/100</div>
+            <div className="text-sm text-monitor-text/50 mt-1 font-clinical">{total}/100</div>
           </div>
           <div className="text-left">
-            <div className="text-amber-400 font-bold text-lg">+{xp} XP</div>
-            <div className="text-xs text-slate-500">Difficulty {activeCase.difficulty}/5</div>
+            <div className="text-vital-amber vital-glow-amber font-bold text-lg font-clinical">+{xp} XP</div>
+            <div className="text-xs text-monitor-text/50">Difficulty {activeCase.difficulty}/5</div>
             {player.streakCount > 1 && (
-              <div className="text-xs text-amber-300">🔥 {player.streakCount} streak!</div>
+              <div className="text-xs text-vital-amber">🔥 {player.streakCount} streak!</div>
             )}
           </div>
         </div>
       </div>
 
       {/* Score Breakdown */}
-      <div className="bg-slate-800 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-4">Score Breakdown</h3>
+      <div className="monitor-panel p-4">
+        <h3 className="text-sm font-semibold text-vital-cyan uppercase tracking-wider mb-4 font-clinical">Score Breakdown</h3>
         <div className="space-y-3">
           {(Object.keys(SCREEN_NAMES) as (keyof ScreenScores)[]).map(key => {
             const score = scores[key];
@@ -117,17 +123,17 @@ export function Screen7Debrief() {
               <div key={key}>
                 <div className="flex items-center justify-between mb-1">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-slate-400">{SCREEN_NAMES[key]}</span>
-                    {key === 'screen3' && <span className="text-[10px] text-amber-400 bg-amber-400/10 px-1.5 py-0.5 rounded">CORE</span>}
+                    <span className="text-xs text-monitor-text/60">{SCREEN_NAMES[key]}</span>
+                    {key === 'screen3' && <span className="text-[10px] text-vital-amber bg-vital-amber/10 px-1.5 py-0.5 rounded border border-vital-amber/30">CORE</span>}
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-slate-500">{weight}%</span>
-                    <span className={`text-sm font-bold ${score >= 80 ? 'text-green-400' : score >= 50 ? 'text-amber-400' : 'text-red-400'}`}>
+                    <span className="text-xs text-monitor-text/40 font-clinical">{weight}%</span>
+                    <span className={`text-sm font-bold font-clinical ${getScoreTextColor(score)}`}>
                       {score}
                     </span>
                   </div>
                 </div>
-                <div className="w-full h-2 bg-slate-700 rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-monitor-bg rounded-full overflow-hidden border border-monitor-border/30">
                   <div
                     className={`h-full rounded-full transition-all duration-1000 ${getScoreColor(score)}`}
                     style={{ width: `${score}%` }}
@@ -140,25 +146,25 @@ export function Screen7Debrief() {
       </div>
 
       {/* Correct Algorithm Path */}
-      <div className="bg-slate-800 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3">Correct LRCP Algorithm Path</h3>
+      <div className="monitor-panel p-4">
+        <h3 className="text-sm font-semibold text-vital-cyan uppercase tracking-wider mb-3 font-clinical">Correct LRCP Algorithm Path</h3>
         <div className="flex flex-wrap items-center gap-2 text-xs">
-          <span className="bg-blue-900/50 text-blue-300 px-2 py-1 rounded">
+          <span className="bg-vital-cyan/10 text-vital-cyan px-2 py-1 rounded border border-vital-cyan/30">
             Cystic duct {activeCase.correctAlgorithmPath.cysticDuctSize === 'gte4mm' ? '≥ 4mm' : '< 4mm / tortuous'}
           </span>
-          <span className="text-slate-500">→</span>
-          <span className="bg-blue-900/50 text-blue-300 px-2 py-1 rounded">
+          <span className="text-monitor-text/30">→</span>
+          <span className="bg-vital-cyan/10 text-vital-cyan px-2 py-1 rounded border border-vital-cyan/30">
             {activeCase.correctAlgorithmPath.technique === 'choledochoscope_assisted' ? 'Choledochoscope-Assisted' : 'Fluoroscopy-Guided'}
           </span>
-          <span className="text-slate-500">→</span>
-          <span className="bg-amber-900/50 text-amber-300 px-2 py-1 rounded">
+          <span className="text-monitor-text/30">→</span>
+          <span className="bg-vital-amber/10 text-vital-amber px-2 py-1 rounded border border-vital-amber/30">
             {activeCase.correctAlgorithmPath.stoneBurden === 'none' ? 'No stones' :
              activeCase.correctAlgorithmPath.stoneBurden === 'few_small' ? 'Few small' :
              activeCase.correctAlgorithmPath.stoneBurden === 'single_small' ? 'Single small' :
              activeCase.correctAlgorithmPath.stoneBurden === 'multiple_medium' ? 'Multiple/medium' : 'Large (>10mm)'}
           </span>
-          <span className="text-slate-500">→</span>
-          <span className="bg-green-900/50 text-green-300 px-2 py-1 rounded">
+          <span className="text-monitor-text/30">→</span>
+          <span className="bg-vital-green/10 text-vital-green px-2 py-1 rounded border border-vital-green/30">
             {activeCase.correctAlgorithmPath.primaryMethod === 'basket_extraction' ? 'Basket Extraction' :
              activeCase.correctAlgorithmPath.primaryMethod === 'balloon_sphincteroplasty_snowplow' ? 'Sphincteroplasty + Snow-Plow' :
              activeCase.correctAlgorithmPath.primaryMethod === 'lithotripsy' ? 'Lithotripsy' :
@@ -170,18 +176,18 @@ export function Screen7Debrief() {
       </div>
 
       {/* Debrief Explanation */}
-      <div className="bg-slate-800 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-2">Discussion</h3>
-        <p className="text-sm text-slate-300 leading-relaxed">{activeCase.debriefExplanation}</p>
+      <div className="monitor-panel p-4">
+        <h3 className="text-sm font-semibold text-monitor-text uppercase tracking-wider mb-2">Discussion</h3>
+        <p className="text-sm text-monitor-text leading-relaxed">{activeCase.debriefExplanation}</p>
       </div>
 
       {/* Teaching Pearls */}
-      <div className="bg-slate-800 rounded-lg p-4">
-        <h3 className="text-sm font-semibold text-amber-400 uppercase tracking-wider mb-2">Teaching Pearls</h3>
+      <div className="monitor-panel p-4">
+        <h3 className="text-sm font-semibold text-vital-amber vital-glow-amber uppercase tracking-wider mb-2 font-clinical">Teaching Pearls</h3>
         <ul className="space-y-2">
           {activeCase.pearls.map((pearl, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-slate-300">
-              <span className="text-amber-400 mt-0.5">•</span>
+            <li key={i} className="flex items-start gap-2 text-sm text-monitor-text">
+              <span className="text-vital-amber mt-0.5">•</span>
               {pearl}
             </li>
           ))}
@@ -189,14 +195,14 @@ export function Screen7Debrief() {
       </div>
 
       {/* XP Progress */}
-      <div className="bg-slate-800 rounded-lg p-4">
+      <div className="monitor-panel p-4">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-semibold text-slate-300">{player.currentLevel}</span>
-          {nextLevel && <span className="text-xs text-slate-500">{nextLevel.name}</span>}
+          <span className="text-sm font-semibold text-monitor-text font-clinical">{player.currentLevel}</span>
+          {nextLevel && <span className="text-xs text-monitor-text/40 font-clinical">{nextLevel.name}</span>}
         </div>
-        <div className="w-full h-3 bg-slate-700 rounded-full overflow-hidden">
+        <div className="w-full h-3 bg-monitor-bg rounded-full overflow-hidden border border-monitor-border/30">
           <div
-            className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full transition-all duration-1000"
+            className="h-full bg-vital-cyan rounded-full transition-all duration-1000"
             style={{
               width: nextLevel
                 ? `${Math.min(100, ((player.xp - (LEVEL_CONFIG_XP.get(player.currentLevel) || 0)) / ((nextLevel?.xpRequired || 1) - (LEVEL_CONFIG_XP.get(player.currentLevel) || 0))) * 100)}%`
@@ -204,7 +210,7 @@ export function Screen7Debrief() {
             }}
           />
         </div>
-        <div className="text-xs text-slate-500 mt-1">{player.xp} / {nextLevel?.xpRequired || 'MAX'} XP</div>
+        <div className="text-xs text-monitor-text/40 mt-1 font-clinical">{player.xp} / {nextLevel?.xpRequired || 'MAX'} XP</div>
       </div>
 
       {/* Actions */}
@@ -213,13 +219,13 @@ export function Screen7Debrief() {
           onClick={() => {
             startNewCase();
           }}
-          className="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+          className="bg-vital-cyan hover:bg-vital-cyan/80 text-monitor-bg font-semibold px-6 py-3 rounded-lg transition-colors"
         >
           Next Case
         </button>
         <button
           onClick={() => navigate('/')}
-          className="bg-slate-700 hover:bg-slate-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors"
+          className="bg-monitor-panel hover:bg-monitor-border/50 text-monitor-bright font-semibold px-6 py-3 rounded-lg transition-colors border border-monitor-border"
         >
           Return Home
         </button>
